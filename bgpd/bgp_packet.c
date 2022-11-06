@@ -1620,6 +1620,12 @@ static int bgp_update_receive(struct peer *peer, bgp_size_t size)
 				   peer->rcvd_attr_str);
 			peer->rcvd_attr_printed = 1;
 		}
+
+		if (attr_parse_ret == BGP_ATTR_PARSE_WITHDRAW) {
+		        bgp_attr_unintern_sub(&attr);
+        		peer->update_time = bgp_clock();
+        		return Receive_UPDATE_message;
+		}
 	}
 
 	/* Network Layer Reachability Information. */
